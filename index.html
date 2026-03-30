@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHIC 時尚購物</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1a1a1a;
+            --secondary: #666;
+            --accent: #c9a96e;
+            --light: #f8f8f8;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            color: var(--primary);
+        }
+
+        .logo span {
+            font-weight: 600;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary);
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .header-icons button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--primary);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .header-icons button:hover {
+            color: var(--accent);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 56px;
+            font-weight: 300;
+            letter-spacing: 15px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .hero-content p {
+            font-size: 16px;
+            color: var(--secondary);
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            padding: 15px 50px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+        }
+
+        /* Categories */
+        .categories {
+            padding: 80px 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--secondary);
+            font-size: 14px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .category-card {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .category-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .category-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+        }
+
+        .category-overlay h3 {
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin-bottom: 5px;
+        }
+
+        .category-overlay span {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* Products */
+        .products {
+            padding: 80px 5%;
+            background: var(--light);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .product-card {
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .product-image {
+            position: relative;
+            height: 350px;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 5px 15px;
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        .product-actions {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-actions {
+            opacity: 1;
+        }
+
+        .product-actions button {
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .product-actions button:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            font-size: 11px;
+            color: var(--secondary);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .product-price {
+            font-size: 18px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .product-price .original {
+            font-size: 14px;
+            color: var(--secondary);
+            text-decoration: line-through;
+            margin-left: 10px;
+            font-weight: 400;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 5%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .feature h3 {
+            font-size: 14px;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        /* Newsletter */
+        .newsletter {
+            padding: 100px 5%;
+            text-align: center;
+            background: #f5f5f5;
+        }
+
+        .newsletter h2 {
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            margin-bottom: 15px;
+        }
+
+        .newsletter p {
+            color: var(--secondary);
+            margin-bottom: 30px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .newsletter-form button {
+            padding: 15px 40px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: var(--transition);
+        }
+
+        .newsletter-form button:hover {
+            background: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 5%;
+            background: var(--white);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 20px;
+        }
+
+        .footer-brand p {
+            color: var(--secondary);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .footer-links h4 {
+            font-size: 14px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: var(--secondary);
+            font-size: 13px;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--white);
+            box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            z-index: 2000;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 25px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h3 {
+            font-size: 18px;
+            letter-spacing: 3px;
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item-image {
+            width: 80px;
+            height: 100px;
+            background: #f5f5f5;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .cart-item-quantity button {
+            width: 25px;
+            height: 25px;
+            border: 1px solid #ddd;
+            background: none;
+            cursor: pointer;
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: var(--secondary);
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .cart-footer {
+            padding: 25px;
+            border-top: 1px solid #eee;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .cart-total-amount {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .checkout-btn:hover {
+            background: var(--accent);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .category-grid, .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-content h1 {
+                font-size: 32px;
+                letter-spacing: 5px;
+            }
+            
+            .category-grid, .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-card {
+                height: 250px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            z-index: 3000;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">CHIC<span>.</span></div>
+        <nav>
+            <ul>
+                <li><a href="#home">首頁</a></li>
+                <li><a href="#categories">分類</a></li>
+                <li><a href="#products">新品</a></li>
+                <li><a href="#about">關於我們</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <button title="搜尋">🔍</button>
+            <button title="會員">👤</button>
+            <button title="收藏">❤️</button>
+            <button onclick="toggleCart()" title="購物車">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+        <button class="mobile-menu-btn">☰</button>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>SUMMER COLLECTION</h1>
+            <p>2026 春夏新品上市</p>
+            <a href="#products" class="btn">立即選購</a>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories" id="categories">
+        <div class="section-title">
+            <h2>商品分類</h2>
+            <p>探索多樣風格，找到你的專屬時尚</p>
+        </div>
+        <div class="category-grid">
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600" alt="女裝">
+                <div class="category-overlay">
+                    <h3>女裝</h3>
+                    <span>120+ 件商品</span>
+                </div>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=600" alt="男裝">
+                <div class="category-overlay">
+                    <h3>男裝</h3>
+                    <span>85+ 件商品</span>
+                </div>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=600" alt="鞋履">
+                <div class="category-overlay">
+                    <h3>鞋履</h3>
+                    <span>60+ 件商品</span>
+                </div>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600" alt="包款">
+                <div class="category-overlay">
+                    <h3>包款</h3>
+                    <span>45+ 件商品</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products" id="products">
+        <div class="section-title">
+            <h2>精選新品</h2>
+            <p>時尚尖端，質感生活</p>
+        </div>
+        <div class="product-grid" id="productGrid">
+            <!-- Products will be inserted by JS -->
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="feature">
+            <div class="feature-icon">🚚</div>
+            <h3>免費配送</h3>
+            <p>全館滿 $1000 免運費</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">↩️</div>
+            <h3>7天退換</h3>
+            <p>不合適可免費退換</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🔒</div>
+            <h3>安全支付</h3>
+            <p>支援多種支付方式</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">💬</div>
+            <h3>線上客服</h3>
+            <p>24/7 即時回覆</p>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <h2>加入會員</h2>
+        <p>第一時間收到最新時尚資訊與專屬優惠</p>
+        <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+            <input type="email" placeholder="輸入您的電子郵件" required>
+            <button type="submit">訂閱</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer id="about">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="logo">CHIC<span>.</span></div>
+                <p>致力於為您提供最優質的時尚單品。我們相信，每個人都值得擁有獨特的風格。</p>
+            </div>
+            <div class="footer-links">
+                <h4>購物指南</h4>
+                <ul>
+                    <li><a href="#">配送資訊</a></li>
+                    <li><a href="#">退換貨政策</a></li>
+                    <li><a href="#">尺寸指南</a></li>
+                    <li><a href="#">常見問題</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>關於我們</h4>
+                <ul>
+                    <li><a href="#">品牌故事</a></li>
+                    <li><a href="#">人才招募</a></li>
+                    <li><a href="#">聯絡我們</a></li>
+                    <li><a href="#">隱私權政策</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>追蹤我們</h4>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LINE</a></li>
+                    <li><a href="#">Pinterest</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 CHIC 時尚購物. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>購物車</h3>
+            <button class="cart-close" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be inserted by JS -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>小計</span>
+                <span class="cart-total-amount" id="cartTotal">$0</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">結帳</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Product Data
+        const products = [
+            {
+                id: 1,
+                name: "義大利真皮手提包",
+                category: "包款",
+                price: 4280,
+                originalPrice: 5600,
+                image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500",
+                badge: "熱銷"
+            },
+            {
+                id: 2,
+                name: "極簡羊毛大衣",
+                category: "女裝",
+                price: 6800,
+                originalPrice: null,
+                image: "https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?w=500",
+                badge: "新品"
+            },
+            {
+                id: 3,
+                name: "經典白皮鞋",
+                category: "鞋履",
+                price: 3280,
+                originalPrice: 4200,
+                image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500",
+                badge: null
+            },
+            {
+                id: 4,
+                name: "紳士休閒西裝外套",
+                category: "男裝",
+                price: 5200,
+                originalPrice: null,
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500",
+                badge: "精選"
+            },
+            {
+                id: 5,
+                name: "絲巾印花洋裝",
+                category: "女裝",
+                price: 3680,
+                originalPrice: 4800,
+                image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=500",
+                badge: "7折"
+            },
+            {
+                id: 6,
+                name: "真皮腰包",
+                category: "包款",
+                price: 2680,
+                originalPrice: null,
+                image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500",
+                badge: null
+            },
+            {
+                id: 7,
+                name: "針織高領毛衣",
+                category: "男裝",
+                price: 2280,
+                originalPrice: 3000,
+                image: "https://images.unsplash.com/photo-1638643391904-9b551ba91eaa?w=500",
+                badge: "特價"
+            },
+            {
+                id: 8,
+                name: "粗跟短靴",
+                category: "鞋履",
+                price: 4580,
+                originalPrice: null,
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
+                badge: "新品"
+            }
+        ];
+
+        // Cart
+        let cart = [];
+
+        // Render Products
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card" onclick="addToCart(${product.id})">
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}">
+                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                        <div class="product-actions">
+                            <button onclick="event.stopPropagation(); addToCart(${product.id})">🛒</button>
+                            <button onclick="event.stopPropagation(); toggleFavorite(${product.id})">❤️</button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">
+                            $${product.price.toLocaleString()}
+                            ${product.originalPrice ? `<span class="original">$${product.originalPrice.toLocaleString()}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add to Cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            
+            updateCart();
+            showToast(`已加入購物車：${product.name}`);
+        }
+
+        // Update Cart
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            
+            cartCount.textContent = totalItems;
+            cartTotal.textContent = `$${totalPrice.toLocaleString()}`;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align:center;color:#999;padding:40px;">購物車是空的</p>';
+                return;
+            }
+            
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        <img src="${item.image}" alt="${item.name}">
+                    </div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">$${item.price.toLocaleString()}</div>
+                        <div class="cart-item-quantity">
+                            <button onclick="updateQuantity(${item.id}, -1)">−</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart(${item.id})">移除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update Quantity
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCart();
+                }
+            }
+        }
+
+        // Remove from Cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+        }
+
+        // Toggle Cart
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // Toggle Favorite
+        function toggleFavorite(productId) {
+            showToast('已加入我的最愛');
+        }
+
+        // Checkout
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('購物車是空的');
+                return;
+            }
+            showToast('感謝您的訂單！我們將盡快與您聯繫');
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        // Subscribe Newsletter
+        function subscribeNewsletter(e) {
+            e.preventDefault();
+            showToast('感謝您的訂閱！');
+            e.target.reset();
+        }
+
+        // Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize
+        renderProducts();
+        updateCart();
+    </script>
+</body>
+</html>
