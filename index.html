@@ -652,8 +652,15 @@
             padding: 40px;
             width: 90%;
             max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
             border-radius: 5px;
             position: relative;
+        }
+
+        #checkoutModal .modal-content,
+        #checkoutModal.modal {
+            max-height: none;
         }
 
         .modal-close {
@@ -1094,7 +1101,7 @@
 
     <!-- Checkout Modal -->
     <div class="modal" id="checkoutModal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-height:90vh;overflow-y:auto;">
             <button class="modal-close" onclick="closeModal('checkoutModal')">×</button>
             <h2>填寫訂單</h2>
             <form onsubmit="handleCheckout(event)">
@@ -1127,7 +1134,9 @@
                         總計：<span id="checkoutTotal">$0</span>
                     </div>
                 </div>
-                <button type="submit" class="modal-btn" style="margin-top:20px;">確認訂單</button>
+                <div style="position:sticky;bottom:0;background:white;padding-top:15px;">
+                    <button type="submit" class="modal-btn" style="width:100%;">確認訂單</button>
+                </div>
             </form>
         </div>
     </div>
