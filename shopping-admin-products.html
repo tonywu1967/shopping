@@ -671,32 +671,29 @@
 
         // Load Products
         async function loadProducts() {
-            if (!authToken) return;
-
             const category = document.getElementById('categoryFilter').value;
             let url = `${API_URL}/api/products?active=false`;
             if (category) url += `&category=${encodeURIComponent(category)}`;
 
             try {
-                const response = await fetch(url, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
+                const response = await fetch(url);
 
                 if (!response.ok) {
                     if (response.status === 401) {
                         logout();
                     }
+                    showToast('載入商品失敗', 'error');
                     return;
                 }
 
                 const data = await response.json();
-                products = data.products;
+                products = data.products || [];
                 renderProducts();
                 updateStats();
 
             } catch (error) {
                 console.error('Failed to load products:', error);
-                showToast('載入商品失敗', 'error');
+                showToast('載入商品失敗: ' + error.message, 'error');
             }
         }
 
