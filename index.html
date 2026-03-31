@@ -1263,11 +1263,11 @@
                         <div class="cart-item-name">${item.name}</div>
                         <div class="cart-item-price">$${item.price.toLocaleString()}</div>
                         <div class="cart-item-quantity">
-                            <button onclick="updateQuantity(${item.id}, -1)">−</button>
+                            <button onclick="updateQuantity('${item.id}', -1)">−</button>
                             <span>${item.quantity}</span>
-                            <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                            <button onclick="updateQuantity('${item.id}', 1)">+</button>
                         </div>
-                        <button class="cart-item-remove" onclick="removeFromCart(${item.id})">移除</button>
+                        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">移除</button>
                     </div>
                 </div>
             `).join('');
