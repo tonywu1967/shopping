@@ -672,8 +672,8 @@
         // Load Products
         async function loadProducts() {
             const category = document.getElementById('categoryFilter').value;
-            let url = `${API_URL}/api/products?active=false`;
-            if (category) url += `&category=${encodeURIComponent(category)}`;
+            let url = `${API_URL}/api/products`;
+            if (category) url += `?category=${encodeURIComponent(category)}`;
 
             console.log('Fetching products from:', url);
 
