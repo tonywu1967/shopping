@@ -758,6 +758,42 @@
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
+    <!-- Order Detail Modal -->
+    <div class="modal" id="orderDetailModal">
+        <div class="modal-content" style="max-width:500px;">
+            <button class="modal-close" onclick="closeModal('orderDetailModal')">×</button>
+            <h2>訂單詳情</h2>
+            <div id="orderDetail"></div>
+        </div>
+    </div>
+
+    <!-- Update Order Status Modal -->
+    <div class="modal" id="updateOrderStatusModal">
+        <div class="modal-content" style="max-width:400px;">
+            <button class="modal-close" onclick="closeModal('updateOrderStatusModal')">×</button>
+            <h2>更新訂單狀態</h2>
+            <form onsubmit="handleUpdateOrderStatus(event)">
+                <input type="hidden" id="updateOrderId">
+                <div class="form-group">
+                    <label>訂單狀態</label>
+                    <select id="updateOrderStatus" required>
+                        <option value="pending">待確認</option>
+                        <option value="confirmed">已確認</option>
+                        <option value="processing">處理中</option>
+                        <option value="shipped">已出貨</option>
+                        <option value="delivered">已完成</option>
+                        <option value="cancelled">已取消</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>備註</label>
+                    <textarea id="updateOrderNotes" placeholder="選填"></textarea>
+                </div>
+                <button type="submit" class="btn" style="width:100%">更新狀態</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         const API_URL = 'https://shopping-backend.zeabur.app';
         let authToken = localStorage.getItem('adminToken');
@@ -1070,9 +1106,142 @@
             }
         }
 
-        // Load Orders (placeholder)
-        function loadOrders() {
-            // Placeholder for future order management
+        // Load Orders
+        async function loadOrders() {
+            if (!authToken) return;
+
+            const statusFilter = document.getElementById('orderStatusFilter')?.value || '';
+            let url = `${API_URL}/api/orders`;
+            if (statusFilter) url += `?status=${encodeURIComponent(statusFilter)}`;
+
+            try {
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        logout();
+                    }
+                    return;
+                }
+
+                const data = await response.json();
+                orders = data.orders || [];
+                renderOrders();
+                document.getElementById('statOrders').textContent = data.total || 0;
+
+            } catch (error) {
+                console.error('Failed to load orders:', error);
+            }
+        }
+
+        let orders = [];
+
+        function renderOrders() {
+            const tbody = document.getElementById('orderTableBody');
+            
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#999;padding:40px;">尚無訂單資料</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = orders.map(o => `
+                <tr>
+                    <td>${o.orderNumber}</td>
+                    <td>${o.userId?.name || '-'}<br><small style="color:#999">${o.userId?.email || ''}</small></td>
+                    <td style="color:var(--accent);font-weight:600;">$${o.totalAmount?.toLocaleString()}</td>
+                    <td><span style="color:${getOrderStatusColor(o.status)}">${getOrderStatusText(o.status)}</span></td>
+                    <td>${new Date(o.createdAt).toLocaleDateString('zh-TW')}</td>
+                    <td>
+                        <button class="action-btn" onclick="viewOrder('${o._id}')">查看</button>
+                        <button class="action-btn" onclick="openUpdateOrderStatusModal('${o._id}', '${o.status}')">更新</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getOrderStatusColor(status) {
+            const colors = {
+                'pending': '#FFA500',
+                'confirmed': '#28a745',
+                'processing': '#007bff',
+                'shipped': '#6c757d',
+                'delivered': '#28a745',
+                'cancelled': '#dc3545'
+            };
+            return colors[status] || '#666';
+        }
+
+        function getOrderStatusText(status) {
+            const texts = {
+                'pending': '待確認',
+                'confirmed': '已確認',
+                'processing': '處理中',
+                'shipped': '已出貨',
+                'delivered': '已完成',
+                'cancelled': '已取消'
+            };
+            return texts[status] || status;
+        }
+
+        async function viewOrder(id) {
+            const order = orders.find(o => o._id === id);
+            if (!order) return;
+
+            const itemsHtml = order.items.map(item => `
+                <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;">
+                    <span>${item.name} x${item.quantity}</span>
+                    <span>$${(item.price * item.quantity).toLocaleString()}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('orderDetail').innerHTML = `
+                <div class="info-row"><span class="info-label">訂單編號</span><span class="info-value">${order.orderNumber}</span></div>
+                <div class="info-row"><span class="info-label">會員</span><span class="info-value">${order.userId?.name || '-'} (${order.userId?.email || '-'})</span></div>
+                <div class="info-row"><span class="info-label">狀態</span><span class="info-value" style="color:${getOrderStatusColor(order.status)}">${getOrderStatusText(order.status)}</span></div>
+                <div class="info-row"><span class="info-label">金額</span><span class="info-value" style="color:var(--accent);font-weight:600;">$${order.totalAmount?.toLocaleString()}</span></div>
+                <div class="info-row"><span class="info-label">收件人</span><span class="info-value">${order.shippingInfo?.name || '-'}</span></div>
+                <div class="info-row"><span class="info-label">電話</span><span class="info-value">${order.shippingInfo?.phone || '-'}</span></div>
+                <div class="info-row"><span class="info-label">地址</span><span class="info-value">${order.shippingInfo?.address || '-'} ${order.shippingInfo?.city || ''} ${order.shippingInfo?.zipCode || ''}</span></div>
+                <div class="info-row"><span class="info-label">時間</span><span class="info-value">${new Date(order.createdAt).toLocaleString('zh-TW')}</span></div>
+                <div style="margin-top:15px;"><strong style="font-size:12px;">訂單內容</strong>${itemsHtml}</div>
+                <div style="text-align:right;margin-top:10px;font-size:18px;color:var(--accent);font-weight:600;">總計：$${order.totalAmount?.toLocaleString()}</div>
+            `;
+            openModal('orderDetailModal');
+        }
+
+        function openUpdateOrderStatusModal(id, currentStatus) {
+            document.getElementById('updateOrderId').value = id;
+            document.getElementById('updateOrderStatus').value = currentStatus;
+            openModal('updateOrderStatusModal');
+        }
+
+        async function handleUpdateOrderStatus(e) {
+            e.preventDefault();
+            const id = document.getElementById('updateOrderId').value;
+            const status = document.getElementById('updateOrderStatus').value;
+            const notes = document.getElementById('updateOrderNotes').value;
+
+            try {
+                const response = await fetch(`${API_URL}/api/orders/${id}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ status, notes })
+                });
+
+                if (!response.ok) throw new Error('更新失敗');
+
+                closeModal('updateOrderStatusModal');
+                loadOrders();
+                showToast('訂單狀態已更新');
+
+            } catch (error) {
+                showToast(error.message || '更新失敗', 'error');
+            }
         }
 
         // Modal Functions
