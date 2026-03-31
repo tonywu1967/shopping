@@ -675,18 +675,22 @@
             let url = `${API_URL}/api/products?active=false`;
             if (category) url += `&category=${encodeURIComponent(category)}`;
 
+            console.log('Fetching products from:', url);
+
             try {
                 const response = await fetch(url);
+                console.log('Response status:', response.status);
 
                 if (!response.ok) {
                     if (response.status === 401) {
                         logout();
                     }
-                    showToast('載入商品失敗', 'error');
+                    showToast('載入商品失敗: HTTP ' + response.status, 'error');
                     return;
                 }
 
                 const data = await response.json();
+                console.log('Products data:', data);
                 products = data.products || [];
                 renderProducts();
                 updateStats();
