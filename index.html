@@ -39,6 +39,7 @@
             font-weight: 300;
             letter-spacing: 8px;
             color: var(--primary);
+            cursor: pointer;
         }
 
         .logo span {
@@ -82,6 +83,39 @@
 
         .header-icons button:hover {
             color: var(--accent);
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            min-width: 150px;
+            display: none;
+            z-index: 1001;
+        }
+
+        .user-dropdown.show {
+            display: block;
+        }
+
+        .user-dropdown a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .user-dropdown a:hover {
+            background: var(--light);
         }
 
         .cart-count {
@@ -141,6 +175,17 @@
 
         .btn:hover {
             background: var(--accent);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
         }
 
         /* Categories */
@@ -584,6 +629,169 @@
             background: var(--accent);
         }
 
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--secondary);
+        }
+
+        .modal h2 {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 5px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            color: var(--secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 12px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-btn:hover {
+            background: var(--accent);
+        }
+
+        .modal-switch {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--secondary);
+        }
+
+        .modal-switch a {
+            color: var(--accent);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .modal-error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            border-radius: 3px;
+            display: none;
+        }
+
+        .modal-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            border-radius: 3px;
+            display: none;
+        }
+
+        /* User Info */
+        .user-info {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .user-info h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .user-info p {
+            font-size: 14px;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .user-info .btn {
+            margin-top: 15px;
+            padding: 10px 30px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            z-index: 4000;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
         /* Mobile Menu */
         .mobile-menu-btn {
             display: none;
@@ -647,33 +855,12 @@
                 flex-direction: column;
             }
         }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--primary);
-            color: white;
-            padding: 15px 40px;
-            font-size: 14px;
-            letter-spacing: 1px;
-            z-index: 3000;
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
-        <div class="logo">CHIC<span>.</span></div>
+        <div class="logo" onclick="location.href='/'">CHIC<span>.</span></div>
         <nav>
             <ul>
                 <li><a href="#home">首頁</a></li>
@@ -684,7 +871,12 @@
         </nav>
         <div class="header-icons">
             <button title="搜尋">🔍</button>
-            <button title="會員">👤</button>
+            <div class="user-menu">
+                <button id="userBtn" title="會員" onclick="toggleUserMenu()">👤</button>
+                <div class="user-dropdown" id="userDropdown">
+                    <!-- 動態內容 -->
+                </div>
+            </div>
             <button title="收藏">❤️</button>
             <button onclick="toggleCart()" title="購物車">
                 🛒
@@ -844,10 +1036,80 @@
         </div>
     </div>
 
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+            <h2>會員登入</h2>
+            <div class="modal-error" id="loginError"></div>
+            <div class="modal-success" id="loginSuccess"></div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>電子郵件</label>
+                    <input type="email" id="loginEmail" required placeholder="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label>密碼</label>
+                    <input type="password" id="loginPassword" required placeholder="請輸入密碼">
+                </div>
+                <button type="submit" class="modal-btn">登入</button>
+            </form>
+            <div class="modal-switch">
+                還不是會員？<a onclick="switchModal('loginModal', 'registerModal')">立即註冊</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('registerModal')">×</button>
+            <h2>會員註冊</h2>
+            <div class="modal-error" id="registerError"></div>
+            <div class="modal-success" id="registerSuccess"></div>
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input type="text" id="registerName" required placeholder="請輸入姓名">
+                </div>
+                <div class="form-group">
+                    <label>電子郵件</label>
+                    <input type="email" id="registerEmail" required placeholder="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label>電話</label>
+                    <input type="tel" id="registerPhone" placeholder="0912345678">
+                </div>
+                <div class="form-group">
+                    <label>密碼</label>
+                    <input type="password" id="registerPassword" required minlength="6" placeholder="至少6個字元">
+                </div>
+                <button type="submit" class="modal-btn">註冊</button>
+            </form>
+            <div class="modal-switch">
+                已有帳號？<a onclick="switchModal('registerModal', 'loginModal')">立即登入</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Modal -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('userModal')">×</button>
+            <h2>會員專區</h2>
+            <div class="user-info" id="userInfo">
+                <!-- 動態內容 -->
+            </div>
+        </div>
+    </div>
+
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <script>
+        // API URL
+        const API_URL = 'https://shopping-backend.zeabur.app';
+
         // Product Data
         const products = [
             {
@@ -926,6 +1188,10 @@
 
         // Cart
         let cart = [];
+
+        // User State
+        let currentUser = null;
+        let authToken = localStorage.getItem('authToken');
 
         // Render Products
         function renderProducts() {
@@ -1039,6 +1305,12 @@
                 showToast('購物車是空的');
                 return;
             }
+            if (!authToken) {
+                showToast('請先登入會員');
+                closeCart();
+                openModal('loginModal');
+                return;
+            }
             showToast('感謝您的訂單！我們將盡快與您聯繫');
             cart = [];
             updateCart();
@@ -1050,6 +1322,193 @@
             e.preventDefault();
             showToast('感謝您的訂閱！');
             e.target.reset();
+        }
+
+        // Toggle User Menu
+        function toggleUserMenu() {
+            if (authToken) {
+                openModal('userModal');
+            } else {
+                openModal('loginModal');
+            }
+        }
+
+        // User Dropdown
+        function updateUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            if (authToken && currentUser) {
+                dropdown.innerHTML = `
+                    <a onclick="openModal('userModal')">👤 ${currentUser.name}</a>
+                    <a onclick="logout()">登出</a>
+                `;
+            } else {
+                dropdown.innerHTML = `
+                    <a onclick="openModal('loginModal')">登入</a>
+                    <a onclick="switchModal('loginModal', 'registerModal')">註冊</a>
+                `;
+            }
+        }
+
+        // Modal Functions
+        function openModal(id) {
+            document.getElementById(id).classList.add('open');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+            // Clear messages
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('loginSuccess').style.display = 'none';
+            document.getElementById('registerError').style.display = 'none';
+            document.getElementById('registerSuccess').style.display = 'none';
+        }
+
+        function switchModal(from, to) {
+            closeModal(from);
+            setTimeout(() => openModal(to), 100);
+        }
+
+        // Handle Login
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorEl = document.getElementById('loginError');
+            const successEl = document.getElementById('loginSuccess');
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    errorEl.textContent = data.message;
+                    errorEl.style.display = 'block';
+                    return;
+                }
+
+                // Save token
+                authToken = data.token;
+                localStorage.setItem('authToken', authToken);
+                currentUser = data.user;
+
+                successEl.textContent = '登入成功！';
+                successEl.style.display = 'block';
+                errorEl.style.display = 'none';
+
+                updateUserDropdown();
+                closeCart();
+                closeModal('loginModal');
+
+                setTimeout(() => {
+                    closeModal('loginModal');
+                    showToast(`歡迎回來，${currentUser.name}！`);
+                }, 500);
+
+            } catch (error) {
+                errorEl.textContent = '網路錯誤，請稍後再試';
+                errorEl.style.display = 'block';
+            }
+        }
+
+        // Handle Register
+        async function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('registerPhone').value;
+            const password = document.getElementById('registerPassword').value;
+            const errorEl = document.getElementById('registerError');
+            const successEl = document.getElementById('registerSuccess');
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, phone, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    errorEl.textContent = data.message;
+                    errorEl.style.display = 'block';
+                    return;
+                }
+
+                successEl.textContent = '註冊成功！即將跳轉至登入頁面...';
+                successEl.style.display = 'block';
+                errorEl.style.display = 'none';
+
+                setTimeout(() => {
+                    switchModal('registerModal', 'loginModal');
+                    document.getElementById('loginEmail').value = email;
+                }, 1500);
+
+            } catch (error) {
+                errorEl.textContent = '網路錯誤，請稍後再試';
+                errorEl.style.display = 'block';
+            }
+        }
+
+        // Load User Profile
+        async function loadUserProfile() {
+            if (!authToken) return;
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/profile`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (!response.ok) {
+                    logout();
+                    return;
+                }
+
+                const user = await response.json();
+                currentUser = user;
+                updateUserDropdown();
+                updateUserModal();
+            } catch (error) {
+                console.error('Failed to load profile');
+            }
+        }
+
+        // Update User Modal
+        function updateUserModal() {
+            const userInfo = document.getElementById('userInfo');
+            if (currentUser) {
+                userInfo.innerHTML = `
+                    <h3>${currentUser.name}</h3>
+                    <p>📧 ${currentUser.email}</p>
+                    <p>📱 ${currentUser.phone || '未填寫'}</p>
+                    <p>📍 ${currentUser.address || '未填寫'}</p>
+                    <p style="margin-top:15px;font-size:12px;color:#999;">
+                        註冊時間：${new Date(currentUser.createdAt).toLocaleDateString('zh-TW')}
+                    </p>
+                    <button class="btn" onclick="logout()">登出</button>
+                `;
+            }
+        }
+
+        // Logout
+        function logout() {
+            authToken = null;
+            currentUser = null;
+            localStorage.removeItem('authToken');
+            updateUserDropdown();
+            closeModal('userModal');
+            closeCart();
+            showToast('已登出');
+        }
+
+        // Close Cart
+        function closeCart() {
+            document.getElementById('cartSidebar').classList.remove('open');
         }
 
         // Toast
@@ -1065,6 +1524,17 @@
         // Initialize
         renderProducts();
         updateCart();
+        loadUserProfile();
+        updateUserDropdown();
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('open');
+                }
+            });
+        });
     </script>
 </body>
 </html>
