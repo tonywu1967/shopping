@@ -1254,26 +1254,11 @@
 
         // Render Products
         // Load Products from API
-        async function loadProducts(searchQuery = '') {
+        async function loadProducts() {
             try {
-                let url = `${API_URL}/api/products`;
-                if (searchQuery) {
-                    // Search will be done client-side for simplicity
-                }
-                const response = await fetch(url);
+                const response = await fetch(`${API_URL}/api/products`);
                 const data = await response.json();
                 products = data.products || [];
-                
-                // Filter by search query if provided
-                if (searchQuery) {
-                    const query = searchQuery.toLowerCase();
-                    products = products.filter(p => 
-                        p.name.toLowerCase().includes(query) ||
-                        p.category.toLowerCase().includes(query) ||
-                        (p.description && p.description.toLowerCase().includes(query))
-                    );
-                }
-                
                 renderProducts();
             } catch (error) {
                 console.error('Failed to load products:', error);
