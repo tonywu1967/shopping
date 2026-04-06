@@ -292,6 +292,36 @@
             background: var(--light);
         }
 
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 10px 25px;
+            background: var(--white);
+            border: 1px solid #ddd;
+            font-size: 13px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 25px;
+        }
+
+        .category-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
         .product-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -980,6 +1010,14 @@
             <h2>精選新品</h2>
             <p>時尚尖端，質感生活</p>
         </div>
+        <div class="category-filter">
+            <button class="category-btn active" onclick="filterByCategory('')">全部</button>
+            <button class="category-btn" onclick="filterByCategory('女裝')">女裝</button>
+            <button class="category-btn" onclick="filterByCategory('男裝')">男裝</button>
+            <button class="category-btn" onclick="filterByCategory('鞋履')">鞋履</button>
+            <button class="category-btn" onclick="filterByCategory('包款')">包款</button>
+            <button class="category-btn" onclick="filterByCategory('配件')">配件</button>
+        </div>
         <div class="product-grid" id="productGrid">
             <!-- Products will be inserted by JS -->
         </div>
@@ -1205,6 +1243,7 @@
         // Product Data
         // Products will be loaded from API
         let products = [];
+        let currentCategory = '';
 
         // Cart
         let cart = [];
@@ -1252,7 +1291,7 @@
         // Perform search
         function performSearch() {
             const query = document.getElementById('searchInput').value.trim();
-            loadProducts(query);
+            loadProductsWithCategory(currentCategory, query);
         }
 
         // Toggle search on mobile
