@@ -1011,12 +1011,12 @@
             <p>時尚尖端，質感生活</p>
         </div>
         <div class="category-filter" id="categoryFilter">
-            <button class="category-btn active" data-category="" onclick="alert('測試成功')">全部</button>
-            <button class="category-btn" data-category="女裝" onclick="alert('女裝 clicked')">女裝</button>
-            <button class="category-btn" data-category="男裝" onclick="alert('男裝 clicked')">男裝</button>
-            <button class="category-btn" data-category="鞋履" onclick="alert('鞋履 clicked')">鞋履</button>
-            <button class="category-btn" data-category="包款" onclick="alert('包款 clicked')">包款</button>
-            <button class="category-btn" data-category="配件" onclick="alert('配件 clicked')">配件</button>
+            <button class="category-btn active" data-category="" onclick="filterByCategory('')">全部</button>
+            <button class="category-btn" data-category="女裝" onclick="filterByCategory('女裝')">女裝</button>
+            <button class="category-btn" data-category="男裝" onclick="filterByCategory('男裝')">男裝</button>
+            <button class="category-btn" data-category="鞋履" onclick="filterByCategory('鞋履')">鞋履</button>
+            <button class="category-btn" data-category="包款" onclick="filterByCategory('包款')">包款</button>
+            <button class="category-btn" data-category="配件" onclick="filterByCategory('配件')">配件</button>
         </div>
         <div class="product-grid" id="productGrid">
             <!-- Products will be inserted by JS -->
@@ -1273,10 +1273,51 @@
             }
         }
 
+        // Load products with category and search filter
+        async function loadProductsWithCategory(category, query) {
+            try {
+                const response = await fetch(`${API_URL}/api/products`);
+                const data = await response.json();
+                let filtered = data.products || [];
+
+                // Filter by category
+                if (category && category !== '全部') {
+                    filtered = filtered.filter(p => p.category === category);
+                }
+
+                // Filter by search query
+                if (query) {
+                    const q = query.toLowerCase();
+                    filtered = filtered.filter(p =>
+                        p.name.toLowerCase().includes(q) ||
+                        (p.description && p.description.toLowerCase().includes(q))
+                    );
+                }
+
+                products = filtered;
+                renderProducts();
+            } catch (error) {
+                console.error('Failed to load products:', error);
+                document.getElementById('productGrid').innerHTML = '<p style="text-align:center;color:#999;padding:40px;">商品載入失敗，請稍後再試</p>';
+            }
+        }
+
         // Perform search
         function performSearch() {
             const query = document.getElementById('searchInput').value.trim();
             loadProductsWithCategory(currentCategory, query);
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            currentCategory = category;
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+            // Reload with category filter (keep current search query)
+            const query = document.getElementById('searchInput').value.trim();
+            loadProductsWithCategory(category, query);
         }
 
         // Toggle search on mobile
