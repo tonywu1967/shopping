@@ -71,6 +71,36 @@
             align-items: center;
         }
 
+        .search-box {
+            display: flex;
+            gap: 5px;
+        }
+
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 13px;
+            width: 200px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+            width: 250px;
+        }
+
+        .search-box button {
+            padding: 8px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
         .header-icons button {
             background: none;
             border: none;
@@ -876,8 +906,12 @@
                 <li><a href="#about">關於我們</a></li>
             </ul>
         </nav>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜尋商品..." onkeyup="handleSearch(event)">
+            <button onclick="performSearch()">🔍</button>
+        </div>
         <div class="header-icons">
-            <button title="搜尋">🔍</button>
+            <button title="搜尋" onclick="toggleSearch()">🔍</button>
             <div class="user-menu">
                 <button id="userBtn" title="會員" onclick="toggleUserMenu()">👤</button>
                 <div class="user-dropdown" id="userDropdown">
@@ -1181,16 +1215,56 @@
 
         // Render Products
         // Load Products from API
-        async function loadProducts() {
+        async function loadProducts(searchQuery = '') {
             try {
-                const response = await fetch(`${API_URL}/api/products`);
+                let url = `${API_URL}/api/products`;
+                if (searchQuery) {
+                    // Search will be done client-side for simplicity
+                }
+                const response = await fetch(url);
                 const data = await response.json();
-                products = data.products;
+                products = data.products || [];
+                
+                // Filter by search query if provided
+                if (searchQuery) {
+                    const query = searchQuery.toLowerCase();
+                    products = products.filter(p => 
+                        p.name.toLowerCase().includes(query) ||
+                        p.category.toLowerCase().includes(query) ||
+                        (p.description && p.description.toLowerCase().includes(query))
+                    );
+                }
+                
                 renderProducts();
             } catch (error) {
                 console.error('Failed to load products:', error);
                 document.getElementById('productGrid').innerHTML = '<p style="text-align:center;color:#999;padding:40px;">商品載入失敗，請稍後再試</p>';
             }
+        }
+
+        // Handle search on Enter key
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+
+        // Perform search
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            loadProducts(query);
+        }
+
+        // Toggle search on mobile
+        function toggleSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.focus();
+        }
+
+        // Clear search
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            loadProducts();
         }
 
         // Render Products
